@@ -41,13 +41,11 @@ type resources struct {
 func getResources() (*resources, error) {
 	log, cleanup := logger.NewZapLogger("Monitoring-Bot")
 
-	pgConf := postgres.Default()
-
-	if err := postgres.Migrate(pgConf); err != nil {
+	if err := postgres.Migrate(); err != nil {
 		return nil, fmt.Errorf("error migrating database: %w", err)
 	}
 
-	repository, err := postgres.NewRepository(pgConf)
+	repository, err := postgres.NewRepository()
 	if err != nil {
 		return nil, fmt.Errorf("error creating repository repository: %w", err)
 	}

@@ -14,10 +14,12 @@ import (
 	"github.com/pressly/goose/v3"
 )
 
-func Migrate(config Config) error {
+func Migrate() error {
 	dialect := "postgres"
 
-	db, err := sql.Open(dialect, config.DbUrl())
+	config := migrations()
+
+	db, err := sql.Open(dialect, config.ConnectionURL())
 	if err != nil {
 		return err
 	}
@@ -43,8 +45,10 @@ type Repository struct {
 	db Database
 }
 
-func NewRepository(config Config) (*Repository, error) {
-	conf, err := pgxpool.ParseConfig(config.DbUrl())
+func NewRepository() (*Repository, error) {
+	config := usage()
+
+	conf, err := pgxpool.ParseConfig(config.ConnectionURL())
 	if err != nil {
 		return nil, err
 	}
