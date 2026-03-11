@@ -1,5 +1,7 @@
 -- +goose Up
+SET ROLE app_owner;
 
+SET SEARCH_PATH = storm;
 -- Tables
 CREATE TABLE IF NOT EXISTS assets
 (
