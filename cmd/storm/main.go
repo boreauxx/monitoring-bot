@@ -2,6 +2,8 @@ package main
 
 import (
 	"context"
+	"fmt"
+	"os"
 	"os/signal"
 	"syscall"
 
@@ -15,6 +17,7 @@ func main() {
 	defer cancel()
 
 	if err := run(ctx); err != nil {
-		panic("error starting monitoring bot: " + err.Error())
+		_, _ = fmt.Fprintln(os.Stderr, err)
+		os.Exit(1)
 	}
 }
