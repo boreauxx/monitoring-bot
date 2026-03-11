@@ -25,4 +25,4 @@ COPY --chown=appuser:appgroup --from=builder /src/migrations /app/migrations
 USER appuser
 
 EXPOSE 8080
-ENTRYPOINT ["/app/api"]
+ENTRYPOINT ["/app/storm"]
