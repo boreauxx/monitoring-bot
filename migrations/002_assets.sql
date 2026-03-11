@@ -40,8 +40,19 @@ CREATE INDEX IF NOT EXISTS idx_incidents_asset_id ON incidents (asset_id);
 CREATE INDEX IF NOT EXISTS idx_incidents_ended_at ON incidents (ended_at);
 CREATE UNIQUE INDEX IF NOT EXISTS uq_incidents_open_asset ON incidents (asset_id) WHERE ended_at IS NULL;
 
+-- Permissions
+GRANT SELECT, INSERT, UPDATE, DELETE ON
+    assets,
+    probe_events,
+    incidents TO app_user;
+
+RESET ROLE;
+
 -- +goose Down
+SET ROLE app_owner;
 
 DROP TABLE IF EXISTS incidents;
 DROP TABLE IF EXISTS probe_events;
 DROP TABLE IF EXISTS assets;
+
+RESET ROLE;
