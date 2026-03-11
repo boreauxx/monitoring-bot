@@ -1,7 +1,7 @@
 package postgres
 
 const storeAssetQuery = `
-INSERT INTO public.assets (name,
+INSERT INTO storm.assets (name,
                            address,
                            interval_seconds,
                            timeout_seconds)
@@ -22,7 +22,7 @@ RETURNING
     updated_at`
 
 const storeProbeQuery = `
-INSERT INTO public.probe_events (success,
+INSERT INTO storm.probe_events (success,
                                  code,
                                  err_message,
                                  asset_id)
@@ -36,7 +36,7 @@ RETURNING
     asset_id`
 
 const storeIncidentQuery = `
-INSERT INTO public.incidents (severity,
+INSERT INTO storm.incidents (severity,
                               summary,
                               started_at,
                               ended_at,
@@ -57,7 +57,7 @@ SELECT id,
        started_at,
        ended_at,
        asset_id
-FROM public.incidents
+FROM storm.incidents
 WHERE asset_id = $1
   	AND ended_at IS NULL
 ORDER BY started_at DESC
@@ -65,7 +65,7 @@ LIMIT 1
 FOR UPDATE`
 
 const resolveIncidentQuery = `
-UPDATE public.incidents
+UPDATE storm.incidents
 SET ended_at = $2
 WHERE id = $1
 RETURNING
@@ -77,5 +77,5 @@ RETURNING
     asset_id`
 
 const cleanupProbesQuery = `
-DELETE FROM public.probe_events
+DELETE FROM storm.probe_events
 WHERE created_at <= $1`
